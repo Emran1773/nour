@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نور — رفيق المسلم اليومي</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="icon.jpeg">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Cairo & Amiri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .quran-font { font-family: 'Amiri', serif; }
+        .mushaf-page-container {
+            background-color: #FAF8F5;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.02);
+        }
+        .dark .mushaf-page-container {
+            background-color: #121B1E;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.2);
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .quran-font { font-family: 'Amiri', serif; }
+        
+        /* الوضع الفاتح والداكن الصريح للمصحف */
+        .mushaf-page-container {
+            background-color: #FAF8F5;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.02);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .dark .mushaf-page-container {
+            background-color: #121B1E !important;
+            color: #E2E8F0 !important;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.4);
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="bg-[#F8FAF9] dark:bg-[#0F171A] text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-emerald-100 dark:border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="icon.JPG" alt="أيقونة نور" class="w-10 h-10 rounded-xl object-cover shadow-sm border border-emerald-500/20" onerror="this.src='https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=100&h=100&fit=crop'">
+                <div>
+                    <h1 class="text-xl font-bold text-emerald-800 dark:text-emerald-400 quran-font">نور</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">رفيق المسلم اليومي</p>
+                </div>
+            </div>
+
+            <!-- Desktop Nav Buttons -->
+            <nav class="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl">
+                <button onclick="switchTab('home')" data-tab="home" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-emerald-600 text-white shadow-md">الرئيسية</button>
+                <button onclick="switchTab('quran')" data-tab="quran" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">المصحف الشريف</button>
+                <button onclick="switchTab('adhkar')" data-tab="adhkar" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">الأذكار</button>
+                <button onclick="switchTab('tasbih')" data-tab="tasbih" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">السبحة</button>
+                <button onclick="switchTab('wird')" data-tab="wird" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">الورد والمتابعة</button>
+                <button onclick="switchTab('settings')" data-tab="settings" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">الإعدادات</button>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <button onclick="toggleDarkMode()" class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 flex items-center justify-center transition hover:bg-emerald-100 dark:hover:bg-slate-700">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Body Area -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 mb-20 md:mb-6">
+
+        <!-- 1. HOME TAB -->
+        <div id="tab-home" class="tab-content space-y-6">
+            <div class="bg-gradient-to-l from-emerald-700 to-emerald-900 text-white p-6 md:p-8 rounded-3xl shadow-lg relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div class="absolute -left-10 -bottom-10 opacity-10 text-9xl quran-font">نور</div>
+                <div class="relative z-10 space-y-2">
+                    <span id="hijri-date-badge" class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-medium">الموافق 15 شوال 1447 هـ</span>
+                    <h2 class="text-2xl md:text-3xl font-bold quran-font">أهلاً بك، طاعةً وذكراً مباركاً</h2>
+                    <p id="current-date-display" class="text-emerald-100 text-sm">الثلاثاء، 13 أكتوبر 2026</p>
+                </div>
+                <div class="relative z-10 flex items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10">
+                    <div class="text-center">
+                        <span id="home-streak-days" class="block text-2xl font-bold">3</span>
+                        <span class="text-xs text-emerald-200">أيام استمرارية</span>
+                    </div>
+                    <div class="w-px h-10 bg-white/20"></div>
+                    <div class="text-center">
+                        <span class="block text-2xl font-bold">متميز</span>
+                        <span class="text-xs text-emerald-200">معدل الإنجاز</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fast Navigation Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button onclick="switchTab('quran')" class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm hover:shadow-md border border-emerald-100 dark:border-slate-700 text-right transition group flex flex-col gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-book-quran"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 dark:text-slate-100">المصحف الشريف</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">تصفح المصحف بالصفحات</p>
+                    </div>
+                </button>
+
+                <button onclick="switchTab('adhkar')" class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm hover:shadow-md border border-emerald-100 dark:border-slate-700 text-right transition group flex flex-col gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-hands-praying"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 dark:text-slate-100">حصن الأذكار</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">أذكار موثوقة من حصن المسلم</p>
+                    </div>
+                </button>
+
+                <button onclick="switchTab('tasbih')" class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm hover:shadow-md border border-emerald-100 dark:border-slate-700 text-right transition group flex flex-col gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-circle-dot"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 dark:text-slate-100">السبحة الإلكترونية</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">عداد التسبيح والاستغفار</p>
+                    </div>
+                </button>
+
+                <button onclick="switchTab('wird')" class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm hover:shadow-md border border-emerald-100 dark:border-slate-700 text-right transition group flex flex-col gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 dark:text-slate-100">الورد اليومي</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">متابعة إنجازك بانتظام</p>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Last Read & Quick Progress -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 flex flex-col justify-between gap-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-bookmark text-emerald-600"></i> آخر موضع قراءة</h3>
+                        <button onclick="openBookmarksModal()" class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">عرض العلامات</button>
+                    </div>
+                    <div class="p-4 bg-emerald-50/50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-800 flex items-center justify-between">
+                        <div>
+                            <h4 id="home-last-read-title" class="font-bold text-lg quran-font text-emerald-800 dark:text-emerald-300">سورة الفاتحة</h4>
+                            <p id="home-last-read-desc" class="text-xs text-slate-500 dark:text-slate-400">الصفحة رقم 1</p>
+                        </div>
+                        <button onclick="resumeLastReadPage()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition shadow-md">تابع القراءة</button>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 flex flex-col justify-between gap-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-600"></i> ورد القرآن اليومي</h3>
+                        <span id="home-quran-progress" class="text-xs font-bold px-3 py-1 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 rounded-full">20%</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                            <div id="home-quran-bar" class="bg-emerald-600 h-full w-1/5 transition-all duration-500"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span>الهدف: قراءة 5 صفحات</span>
+                            <button id="wird-quran-btn" onclick="toggleQuranWirdDone()" class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold transition">تم الإنجاز</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. QURAN TAB (PAGE BY PAGE MUSHAF MODE) -->
+        <div id="tab-quran" class="tab-content hidden space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700">
+                <div>
+                    <h2 class="text-2xl font-bold quran-font">المصحف الشريف (عرض الصفحات)</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">تصفح المصحف بالصفحة الكاملة طبقاً لمصحف مجمع الملك فهد</p>
+                </div>
+                <div class="w-full md:w-auto flex items-center gap-3">
+                    <button onclick="toggleQuranViewMode()" id="view-mode-toggle-btn" class="px-4 py-2.5 bg-emerald-50 dark:bg-slate-900 border border-emerald-200 dark:border-slate-700 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-300">عرض قائمة السور</button>
+                    <div class="relative w-full md:w-48">
+                        <input type="number" min="1" max="604" id="page-jump-input" placeholder="رقم الصفحة (1-604)" onchange="jumpToPage(this.value)" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Surahs Index View (Default view mode 1) -->
+            <div id="surahs-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Populated dynamically -->
+            </div>
+
+            <!-- Mushaf Page Container View (View mode 2) -->
+            <div id="mushaf-page-view" class="hidden space-y-6">
+                <!-- Page Navigation Header Bar -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-emerald-100 dark:border-slate-700 flex justify-between items-center sticky top-20 z-30">
+                    <button onclick="navigatePage(-1)" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-chevron-right"></i> الصفحة السابقة</button>
+                    
+                    <div class="text-center">
+                        <h3 id="mushaf-header-surah" class="font-bold quran-font text-lg text-emerald-800 dark:text-emerald-300">سورة الفاتحة</h3>
+                        <span id="mushaf-header-page" class="text-xs text-slate-400">صفحة 1 من 604</span>
+                    </div>
+
+                    <button onclick="navigatePage(1)" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-1">الصفحة التالية <i class="fa-solid fa-chevron-left"></i></button>
+                </div>
+
+                <!-- Page Content Layout (Mushaf Replica) -->
+                <div class="mushaf-page-container p-6 md:p-12 rounded-3xl border-2 border-emerald-200 dark:border-slate-700 shadow-md min-h-[600px] flex flex-col justify-between space-y-8">
+                    <!-- Top Page Meta -->
+                    <div class="flex justify-between items-center border-b border-emerald-100 dark:border-slate-800 pb-3 text-xs text-slate-500 quran-font font-bold">
+                        <span id="page-meta-juz">الجزء الأول</span>
+                        <span id="page-meta-surah">سورة الفاتحة</span>
+                    </div>
+
+                    <!-- Quran Verses Page Block -->
+                    <div id="mushaf-verses-block" class="quran-font text-slate-900 dark:text-slate-100 text-2xl md:text-3xl leading-[2.6] text-justify tracking-normal select-text">
+                        <!-- Verses rendered together dynamically as a single Mushaf Page -->
+                    </div>
+
+                    <!-- Bottom Page Footer -->
+                    <div class="flex justify-between items-center border-t border-emerald-100 dark:border-slate-800 pt-3 text-xs">
+                        <button onclick="bookmarkCurrentPage()" class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline flex items-center gap-1"><i class="fa-solid fa-bookmark"></i> حفظ الصفحة الحالية</button>
+                        <span id="page-meta-number" class="font-bold text-slate-600 dark:text-slate-400 text-sm">١</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. ADHKAR TAB -->
+        <div id="tab-adhkar" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold quran-font">حصن الأذكار</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">أذكار موثقة من كتاب حصن المسلم ومطابقة لمصادر الأذكار المعتمدة</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="selectAdhkarCategory('morning')" class="adhkar-cat-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-emerald-600 text-white shadow-md">أذكار الصباح</button>
+                    <button onclick="selectAdhkarCategory('evening')" class="adhkar-cat-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">أذكار المساء</button>
+                    <button onclick="selectAdhkarCategory('sleep')" class="adhkar-cat-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">أذكار النوم</button>
+                    <button onclick="selectAdhkarCategory('wake')" class="adhkar-cat-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">أذكار الاستيقاظ</button>
+                    <button onclick="selectAdhkarCategory('prayer')" class="adhkar-cat-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">بعد الصلاة</button>
+                </div>
+            </div>
+
+            <div id="adhkar-list-container" class="space-y-4">
+                <!-- Adhkar Populated -->
+            </div>
+        </div>
+
+        <!-- 4. TASBIH TAB -->
+        <div id="tab-tasbih" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold quran-font">السبحة الإلكترونية</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">عداد التسبيح والاستغفار التفاعلي</p>
+                </div>
+                <button onclick="confirmResetTasbih()" class="px-4 py-2 bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 hover:bg-red-100 rounded-xl text-xs font-bold transition">تصفير العداد</button>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-8 md:p-12 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 flex flex-col items-center justify-center space-y-8 max-w-xl mx-auto">
+                <div class="w-full flex items-center justify-between bg-emerald-50 dark:bg-slate-900 p-4 rounded-2xl border border-emerald-100 dark:border-slate-700">
+                    <span class="text-sm font-bold text-emerald-800 dark:text-emerald-300">الذكر الحالي:</span>
+                    <select id="tasbih-phrase-select" onchange="changeTasbihPhrase(this.value)" class="bg-transparent font-bold quran-font text-lg text-emerald-700 dark:text-emerald-300 focus:outline-none cursor-pointer">
+                        <option value="سُبْحَانَ اللَّهِ">سُبْحَانَ اللَّهِ</option>
+                        <option value="الْحَمْدُ لِلَّهِ">الْحَمْدُ لِلَّهِ</option>
+                        <option value="اللَّهُ أَكْبَرُ">اللَّهُ أَكْبَرُ</option>
+                        <option value="لَا إِلهَ إِلَّا اللَّهُ">لَا إِلهَ إِلَّا اللَّهُ</option>
+                        <option value="أسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ">أسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ</option>
+                        <option value="سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ">سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ</option>
+                    </select>
+                </div>
+
+                <div id="tasbih-current-phrase" class="text-2xl quran-font font-bold text-emerald-700 dark:text-emerald-400 text-center">سُبْحَانَ اللَّهِ</div>
+
+                <button onclick="incrementTasbih()" class="w-56 h-56 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-800 text-white shadow-2xl flex flex-col items-center justify-center transition active:scale-95 cursor-pointer border-8 border-emerald-100 dark:border-slate-700">
+                    <span id="tasbih-count" class="text-6xl md:text-7xl font-bold quran-font">0</span>
+                    <span class="text-xs text-emerald-200 mt-2">اضغط للتسبيح</span>
+                </button>
+
+                <div class="w-full flex items-center justify-between text-sm">
+                    <span class="text-slate-500">الهدف: <strong id="tasbih-goal-label" class="text-emerald-600 dark:text-emerald-400">33</strong></span>
+                    <div class="flex items-center gap-3">
+                        <button onclick="undoTasbih()" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl font-semibold transition">تراجع</button>
+                        <button onclick="changeTasbihGoal()" class="px-4 py-2 bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 rounded-xl font-semibold transition">تغيير الهدف</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. WIRD & TRACKER TAB -->
+        <div id="tab-wird" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700">
+                <h2 class="text-2xl font-bold quran-font">الورد والمتابعة اليومية</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">نظم استمراريتك في قراءة القرآن والتسبيح</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-4">
+                    <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-fire text-amber-500"></i> الاستمرارية اليومية</h3>
+                    <div class="p-5 bg-emerald-50/50 dark:bg-slate-900/50 rounded-2xl border border-emerald-100 dark:border-slate-800 flex items-center justify-between">
+                        <div>
+                            <span class="text-sm text-slate-500">أيام العبادة المتتالية</span>
+                            <h4 id="wird-streak-days" class="text-3xl font-bold text-emerald-800 dark:text-emerald-300 mt-1">3 أيام</h4>
+                        </div>
+                        <div class="w-14 h-14 bg-amber-100 dark:bg-amber-950/40 text-amber-600 rounded-2xl flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-4">
+                    <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-sliders text-emerald-600"></i> إعداد الأهداف</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">هدف قراءة القرآن (صفحات يومياً)</label>
+                            <input type="number" id="setting-quran-target" value="5" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">هدف التسبيح اليومي</label>
+                            <input type="number" id="setting-tasbih-target" value="100" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <button onclick="saveWirdSettings()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition shadow-md">حفظ الأهداف الجديد</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. SETTINGS TAB -->
+        <div id="tab-settings" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700">
+                <h2 class="text-2xl font-bold quran-font">الإعدادات والبيانات</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">إدارة حفظ واسترجاع النسخ الاحتياطية</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+                    <div>
+                        <h4 class="font-bold text-slate-800 dark:text-slate-100">تصدير البيانات (نسخة احتياطية)</h4>
+                        <p class="text-xs text-slate-500">احفظ تقدمك وعلاماتك المرجعية بملف JSON</p>
+                    </div>
+                    <button onclick="exportData()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition shadow-md">تصدير</button>
+                </div>
+
+                <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+                    <div>
+                        <h4 class="font-bold text-slate-800 dark:text-slate-100">استيراد البيانات</h4>
+                        <p class="text-xs text-slate-500">استرجاع تقدمك من ملف النسخة الاحتياطية</p>
+                    </div>
+                    <label class="px-5 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-sm transition cursor-pointer">
+                        اختر ملفاً <input type="file" accept=".json" onchange="importData(event)" class="hidden">
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-red-600">مسح كافة البيانات</h4>
+                        <p class="text-xs text-slate-500">حذف المحفوظات محلياً وإعادة تعيين التطبيق</p>
+                    </div>
+                    <button onclick="confirmResetAllData()" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm transition shadow-md">مسح البيانات</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Mobile Nav Bar -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-emerald-100 dark:border-slate-800 px-2 py-2 flex justify-around items-center z-40 shadow-lg">
+        <button onclick="switchTab('home')" data-tab="home" class="mobile-nav-btn flex flex-col items-center gap-1 text-emerald-600 dark:text-emerald-400 p-2">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-[10px]">الرئيسية</span>
+        </button>
+        <button onclick="switchTab('quran')" data-tab="quran" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 p-2">
+            <i class="fa-solid fa-book-quran text-lg"></i>
+            <span class="text-[10px]">المصحف</span>
+        </button>
+        <button onclick="switchTab('adhkar')" data-tab="adhkar" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 p-2">
+            <i class="fa-solid fa-hands-praying text-lg"></i>
+            <span class="text-[10px]">الأذكار</span>
+        </button>
+        <button onclick="switchTab('tasbih')" data-tab="tasbih" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 p-2">
+            <i class="fa-solid fa-circle-dot text-lg"></i>
+            <span class="text-[10px]">السبحة</span>
+        </button>
+        <button onclick="switchTab('wird')" data-tab="wird" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 p-2">
+            <i class="fa-solid fa-chart-line text-lg"></i>
+            <span class="text-[10px]">الورد</span>
+        </button>
+        <button onclick="switchTab('settings')" data-tab="settings" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 p-2">
+            <i class="fa-solid fa-gear text-lg"></i>
+            <span class="text-[10px]">الإعدادات</span>
+        </button>
+    </div>
+
+    <!-- Modal Component -->
+    <div id="custom-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-md p-6 rounded-3xl shadow-2xl border border-emerald-100 dark:border-slate-700 space-y-4">
+            <h3 id="modal-title" class="text-xl font-bold text-slate-800 dark:text-slate-100 quran-font">تنبيه</h3>
+            <div id="modal-message" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed"></div>
+            <div id="modal-actions" class="flex justify-end gap-3 pt-2"></div>
+        </div>
+    </div>
+
+    <!-- Script Application Logic -->
+    <script>
+        // 114 Surahs Basic Mapping
+        const SURAHS_DATA = [
+            { id: 1, name: "الفاتحة", count: 7, type: "مكية", startPage: 1 },
+            { id: 2, name: "البقرة", count: 286, type: "مدنية", startPage: 2 },
+            { id: 3, name: "آل عمران", count: 200, type: "مدنية", startPage: 50 },
+            { id: 4, name: "النساء", count: 176, type: "مدنية", startPage: 77 },
+            { id: 5, name: "المائدة", count: 120, type: "مدنية", startPage: 106 },
+            { id: 6, name: "الأنعام", count: 165, type: "مكية", startPage: 128 },
+            { id: 7, name: "الأعراف", count: 206, type: "مكية", startPage: 151 },
+            { id: 8, name: "الأنفال", count: 75, type: "مدنية", startPage: 177 },
+            { id: 9, name: "التوبة", count: 129, type: "مدنية", startPage: 187 },
+            { id: 10, name: "يونس", count: 109, type: "مكية", startPage: 208 },
+            { id: 11, name: "هود", count: 123, type: "مكية", startPage: 221 },
+            { id: 12, name: "يوسف", count: 111, type: "مكية", startPage: 235 },
+            { id: 13, name: "الرعد", count: 43, type: "مدنية", startPage: 249 },
+            { id: 14, name: "إبراهيم", count: 52, type: "مكية", startPage: 255 },
+            { id: 15, name: "الحجر", count: 99, type: "مكية", startPage: 262 },
+            { id: 16, name: "النحل", count: 128, type: "مكية", startPage: 267 },
+            { id: 17, name: "الإسراء", count: 111, type: "مكية", startPage: 282 },
+            { id: 18, name: "الكهف", count: 110, type: "مكية", startPage: 293 },
+            { id: 19, name: "مريم", count: 98, type: "مكية", startPage: 305 },
+            { id: 20, name: "طه", count: 135, type: "مكية", startPage: 312 },
+            { id: 21, name: "الأنبياء", count: 112, type: "مكية", startPage: 322 },
+            { id: 22, name: "الحج", count: 78, type: "مدنية", startPage: 332 },
+            { id: 23, name: "المؤمنون", count: 118, type: "مكية", startPage: 342 },
+            { id: 24, name: "النور", count: 64, type: "مدنية", startPage: 350 },
+            { id: 25, name: "الفرقان", count: 77, type: "مكية", startPage: 359 },
+            { id: 26, name: "الشعراء", count: 227, type: "مكية", startPage: 367 },
+            { id: 27, name: "النمل", count: 93, type: "مكية", startPage: 377 },
+            { id: 28, name: "القصص", count: 88, type: "مكية", startPage: 385 },
+            { id: 29, name: "العنكبوت", count: 69, type: "مكية", startPage: 396 },
+            { id: 30, name: "الروم", count: 60, type: "مكية", startPage: 404 },
+            { id: 31, name: "لقمان", count: 34, type: "مكية", startPage: 411 },
+            { id: 32, name: "السجدة", count: 30, type: "مكية", startPage: 415 },
+            { id: 33, name: "الأحزاب", count: 73, type: "مدنية", startPage: 418 },
+            { id: 34, name: "سبأ", count: 54, type: "مكية", startPage: 428 },
+            { id: 35, name: "فاطر", count: 45, type: "مكية", startPage: 434 },
+            { id: 36, name: "يس", count: 83, type: "مكية", startPage: 440 },
+            { id: 37, name: "الصافات", count: 182, type: "مكية", startPage: 446 },
+            { id: 38, name: "ص", count: 88, type: "مكية", startPage: 453 },
+            { id: 39, name: "الزمر", count: 75, type: "مكية", startPage: 458 },
+            { id: 40, name: "غافر", count: 85, type: "مكية", startPage: 467 },
+            { id: 41, name: "فصلت", count: 54, type: "مكية", startPage: 477 },
+            { id: 42, name: "الشورى", count: 53, type: "مكية", startPage: 483 },
+            { id: 43, name: "الزخرف", count: 89, type: "مكية", startPage: 489 },
+            { id: 44, name: "الدخان", count: 59, type: "مكية", startPage: 496 },
+            { id: 45, name: "الجاثية", count: 37, type: "مكية", startPage: 499 },
+            { id: 46, name: "الأحقاف", count: 35, type: "مكية", startPage: 502 },
+            { id: 47, name: "محمد", count: 38, type: "مدنية", startPage: 507 },
+            { id: 48, name: "الفتح", count: 29, type: "مدنية", startPage: 511 },
+            { id: 49, name: "الحجرات", count: 18, type: "مدنية", startPage: 515 },
+            { id: 50, name: "ق", count: 45, type: "مكية", startPage: 518 },
+            { id: 51, name: "الذاريات", count: 60, type: "مكية", startPage: 520 },
+            { id: 52, name: "الطور", count: 49, type: "مكية", startPage: 523 },
+            { id: 53, name: "النجم", count: 62, type: "مكية", startPage: 526 },
+            { id: 54, name: "القمر", count: 55, type: "مكية", startPage: 528 },
+            { id: 55, name: "الرحمن", count: 78, type: "مدنية", startPage: 531 },
+            { id: 56, name: "الواقعة", count: 96, type: "مكية", startPage: 534 },
+            { id: 57, name: "الحديد", count: 29, type: "مدنية", startPage: 537 },
+            { id: 58, name: "المجادلة", count: 22, type: "مدنية", startPage: 542 },
+            { id: 59, name: "الحشر", count: 24, type: "مدنية", startPage: 545 },
+            { id: 60, name: "الممتحنة", count: 13, type: "مدنية", startPage: 549 },
+            { id: 61, name: "الصف", count: 14, type: "مدنية", startPage: 551 },
+            { id: 62, name: "الجمعة", count: 11, type: "مدنية", startPage: 553 },
+            { id: 63, name: "المنافقون", count: 11, type: "مدنية", startPage: 554 },
+            { id: 64, name: "التغابن", count: 18, type: "مدنية", startPage: 556 },
+            { id: 65, name: "الطلاق", count: 12, type: "مدنية", startPage: 558 },
+            { id: 66, name: "التحريم", count: 12, type: "مدنية", startPage: 560 },
+            { id: 67, name: "الملك", count: 30, type: "مكية", startPage: 562 },
+            { id: 68, name: "القلم", count: 52, type: "مكية", startPage: 564 },
+            { id: 69, name: "الحاقة", count: 52, type: "مكية", startPage: 566 },
+            { id: 70, name: "المعارج", count: 44, type: "مكية", startPage: 568 },
+            { id: 71, name: "نوح", count: 28, type: "مكية", startPage: 570 },
+            { id: 72, name: "الجن", count: 28, type: "مكية", startPage: 572 },
+            { id: 73, name: "المزمل", count: 20, type: "مكية", startPage: 574 },
+            { id: 74, name: "المدثر", count: 56, type: "مكية", startPage: 575 },
+            { id: 75, name: "القيامة", count: 40, type: "مكية", startPage: 577 },
+            { id: 76, name: "الإنسان", count: 31, type: "مدنية", startPage: 578 },
+            { id: 77, name: "المرسلات", count: 50, type: "مكية", startPage: 580 },
+            { id: 78, name: "النبأ", count: 40, type: "مكية", startPage: 582 },
+            { id: 79, name: "النازعات", count: 46, type: "مكية", startPage: 583 },
+            { id: 80, name: "عبس", count: 42, type: "مكية", startPage: 585 },
+            { id: 81, name: "التكوير", count: 29, type: "مكية", startPage: 586 },
+            { id: 82, name: "الانفطار", count: 19, type: "مكية", startPage: 587 },
+            { id: 83, name: "المطففين", count: 36, type: "مكية", startPage: 587 },
+            { id: 84, name: "الانشقاق", count: 25, type: "مكية", startPage: 589 },
+            { id: 85, name: "البروج", count: 22, type: "مكية", startPage: 590 },
+            { id: 86, name: "الطارق", count: 17, type: "مكية", startPage: 591 },
+            { id: 87, name: "الأعلى", count: 19, type: "مكية", startPage: 591 },
+            { id: 88, name: "الغاشية", count: 26, type: "مكية", startPage: 592 },
+            { id: 89, name: "الفجر", count: 30, type: "مكية", startPage: 593 },
+            { id: 90, name: "البلد", count: 20, type: "مكية", startPage: 594 },
+            { id: 91, name: "الشمس", count: 15, type: "مكية", startPage: 595 },
+            { id: 92, name: "الليل", count: 21, type: "مكية", startPage: 595 },
+            { id: 93, name: "الضحى", count: 11, type: "مكية", startPage: 596 },
+            { id: 94, name: "الشرح", count: 8, type: "مكية", startPage: 596 },
+            { id: 95, name: "التين", count: 8, type: "مكية", startPage: 597 },
+            { id: 96, name: "العلق", count: 19, type: "مكية", startPage: 597 },
+            { id: 97, name: "القدر", count: 5, type: "مكية", startPage: 598 },
+            { id: 98, name: "البينة", count: 8, type: "مدنية", startPage: 598 },
+            { id: 99, name: "الزلزلة", count: 8, type: "مدنية", startPage: 599 },
+            { id: 100, name: "العاديات", count: 11, type: "مكية", startPage: 599 },
+            { id: 101, name: "القارعة", count: 11, type: "مكية", startPage: 600 },
+            { id: 102, name: "التكاثر", count: 8, type: "مكية", startPage: 600 },
+            { id: 103, name: "العصر", count: 3, type: "مكية", startPage: 601 },
+            { id: 104, name: "الهمزة", count: 9, type: "مكية", startPage: 601 },
+            { id: 105, name: "الفيل", count: 5, type: "مكية", startPage: 601 },
+            { id: 106, name: "قريش", count: 4, type: "مكية", startPage: 602 },
+            { id: 107, name: "الماعون", count: 7, type: "مكية", startPage: 602 },
+            { id: 108, name: "الكوثر", count: 3, type: "مكية", startPage: 602 },
+            { id: 109, name: "الكافرون", count: 6, type: "مكية", startPage: 603 },
+            { id: 110, name: "النصر", count: 3, type: "مدنية", startPage: 603 },
+            { id: 111, name: "المسد", count: 5, type: "مكية", startPage: 603 },
+            { id: 112, name: "الإخلاص", count: 4, type: "مكية", startPage: 604 },
+            { id: 113, name: "الفلق", count: 5, type: "مكية", startPage: 604 },
+            { id: 114, name: "الناس", count: 6, type: "مكية", startPage: 604 }
+        ];
+
+        // Authentic Adhkar Database from Hisn al-Muslim
+        const ADHKAR_DB = {
+            morning: [
+                { text: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.", count: 1, reference: "رواه مسلم" },
+                { text: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ.", count: 1, reference: "رواه الترمذي" },
+                { text: "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ...", count: 1, reference: "سيد الاستغفار - رواه البخاري" },
+                { text: "رَضِيتُ بِاللَّهِ رَبَّاً، وَبِالإِسْلاَمِ دِينًا، وَبِمُحَمَّدٍ صلى الله عليه وسلم نَبِيَّاً.", count: 3, reference: "رواه أبو داود والترمذي" },
+                { text: "حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ.", count: 7, reference: "رواه أبو داود" }
+            ],
+            evening: [
+                { text: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ...", count: 1, reference: "رواه مسلم" },
+                { text: "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ.", count: 1, reference: "رواه الترمذي" },
+                { text: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.", count: 3, reference: "رواه مسلم" }
+            ],
+            sleep: [
+                { text: "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، فَإِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا...", count: 1, reference: "متفق عليه" }
+            ],
+            wake: [
+                { text: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ.", count: 1, reference: "رواه البخاري" }
+            ],
+            prayer: [
+                { text: "أَسْتَغْفِرُ اللَّهَ (ثَلاَثاً)، اللَّهُمَّ أَنْتَ السَّلاَمُ وَمِنْكَ السَّلاَمُ، تَبَارَكْتَ يَا ذَا الْجَلاَلِ وَالإِكْرَامِ.", count: 1, reference: "رواه مسلم" }
+            ]
+        };
+
+        // State
+        let appState = {
+            darkMode: false,
+            currentPage: 1,
+            lastRead: { surahName: "الفاتحة", pageNum: 1 },
+            bookmarks: [],
+            tasbihCount: 0,
+            tasbihPhrase: "سُبْحَانَ اللَّهِ",
+            tasbihGoal: 33,
+            tasbihHistory: [],
+            wirdQuranDone: false,
+            quranTarget: 5,
+            streakDays: 3
+        };
+
+        let currentQuranView = 'surahs'; // 'surahs' or 'mushaf'
+
+        function loadAppData() {
+            const saved = localStorage.getItem('noor_app_state');
+            if (saved) {
+                try { appState = JSON.parse(saved); } catch (e) { console.error(e); }
+            }
+            applyTheme();
+        }
+
+        function saveAppData() {
+            localStorage.setItem('noor_app_state', JSON.stringify(appState));
+        }
+
+        window.onload = function() {
+            loadAppData();
+            initDates();
+            renderSurahsList();
+            updateHomeStats();
+            selectAdhkarCategory('morning');
+            document.getElementById('setting-quran-target').value = appState.quranTarget;
+            document.getElementById('setting-tasbih-target').value = appState.tasbihGoal;
+            document.getElementById('tasbih-count').innerText = appState.tasbihCount;
+            document.getElementById('tasbih-goal-label').innerText = appState.tasbihGoal;
+            document.getElementById('tasbih-phrase-select').value = appState.tasbihPhrase;
+            document.getElementById('tasbih-current-phrase').innerText = appState.tasbihPhrase;
+        };
+
+        function initDates() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date-display').innerText = now.toLocaleDateString('ar-SA', options);
+            document.getElementById('hijri-date-badge').innerText = `الموافق 15 شوال 1447 هـ`;
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('bg-emerald-600', 'text-white', 'shadow-md');
+                    btn.classList.remove('text-slate-600', 'dark:text-slate-400');
+                } else {
+                    btn.classList.remove('bg-emerald-600', 'text-white', 'shadow-md');
+                    btn.classList.add('text-slate-600', 'dark:text-slate-400');
+                }
+            });
+
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('text-emerald-600', 'dark:text-emerald-400');
+                    btn.classList.remove('text-slate-500', 'dark:text-slate-400');
+                } else {
+                    btn.classList.remove('text-emerald-600', 'dark:text-emerald-400');
+                    btn.classList.add('text-slate-500', 'dark:text-slate-400');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleDarkMode() {
+            appState.darkMode = !appState.darkMode;
+            applyTheme();
+            saveAppData();
+        }
+
+        function applyTheme() {
+            const htmlEl = document.documentElement;
+            if (appState.darkMode) {
+                htmlEl.classList.add('dark');
+                htmlEl.classList.remove('light');
+            } else {
+                htmlEl.classList.remove('dark');
+                htmlEl.classList.add('light');
+            }
+        }
+
+        function renderSurahsList(filter = '') {
+            const grid = document.getElementById('surahs-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const filtered = SURAHS_DATA.filter(s => s.name.includes(filter) || s.id.toString() === filter);
+
+            filtered.forEach(surah => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm hover:shadow-md border border-emerald-100 dark:border-slate-700 transition cursor-pointer flex items-center justify-between group";
+                card.onclick = () => openMushafAtPage(surah.startPage);
+                card.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 font-bold rounded-xl flex items-center justify-center text-lg quran-font group-hover:bg-emerald-600 group-hover:text-white transition">
+                            ${surah.id}
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 dark:text-slate-100 text-lg quran-font">سورة ${surah.name}</h4>
+                            <span class="text-xs text-slate-500">${surah.type} • ${surah.count} آية</span>
+                        </div>
+                    </div>
+                    <div class="text-left">
+                        <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 block">صفحة ${surah.startPage}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleQuranViewMode() {
+            if (currentQuranView === 'surahs') {
+                openMushafAtPage(appState.currentPage || 1);
+            } else {
+                document.getElementById('mushaf-page-view').classList.add('hidden');
+                document.getElementById('surahs-grid').classList.remove('hidden');
+                document.getElementById('view-mode-toggle-btn').innerText = "عرض بالصفحات";
+                currentQuranView = 'surahs';
+            }
+        }
+
+        async function openMushafAtPage(pageNum) {
+            pageNum = Math.max(1, Math.min(604, parseInt(pageNum)));
+            appState.currentPage = pageNum;
+            currentQuranView = 'mushaf';
+
+            document.getElementById('surahs-grid').classList.add('hidden');
+            document.getElementById('mushaf-page-view').classList.remove('hidden');
+            document.getElementById('view-mode-toggle-btn').innerText = "عرض قائمة السور";
+
+            const versesBlock = document.getElementById('mushaf-verses-block');
+            versesBlock.innerHTML = `<div class="py-12 text-center text-emerald-600 font-bold text-base"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><p>جاري تحميل صفحة المصحف رقم ${pageNum}...</p></div>`;
+
+            try {
+                // Fetch King Fahd Mushaf page verses live via API
+                const response = await fetch(`https://api.quran.com/api/v4/quran/verses/uthmani?page_number=${pageNum}`);
+                const data = await response.json();
+
+                if (data && data.verses) {
+                    versesBlock.innerHTML = '';
+                    
+                    // Derive Surah name from surahs mapping
+                    const currentSurah = SURAHS_DATA.slice().reverse().find(s => s.startPage <= pageNum) || SURAHS_DATA[0];
+                    
+                    document.getElementById('mushaf-header-surah').innerText = `سورة ${currentSurah.name}`;
+                    document.getElementById('mushaf-header-page').innerText = `صفحة ${pageNum} من 604`;
+                    document.getElementById('page-meta-surah').innerText = `سورة ${currentSurah.name}`;
+                    document.getElementById('page-meta-number').innerText = toArabicDigits(pageNum);
+
+                    appState.lastRead = { surahName: currentSurah.name, pageNum: pageNum };
+                    saveAppData();
+                    updateHomeStats();
+
+                    let combinedPageHtml = '';
+                    data.verses.forEach((v) => {
+                        const verseKeyParts = v.verse_key.split(':');
+                        const ayahNumber = verseKeyParts[1];
+                        
+                        // Add verse with Uthmani text and standard Ayah end symbol
+                        combinedPageHtml += `${v.text_uthmani} <span class="text-emerald-700 dark:text-emerald-400 font-bold text-xl inline-block px-1">﴿${toArabicDigits(ayahNumber)}﴾</span> `;
+                    });
+
+                    versesBlock.innerHTML = combinedPageHtml;
+                }
+            } catch (e) {
+                versesBlock.innerHTML = `<div class="py-12 text-center text-red-500 font-bold text-base">تعذر تحميل هذه الصفحة، يُرجى التأكد من اتصال الإنترنت.</div>`;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function navigatePage(direction) {
+            openMushafAtPage(appState.currentPage + direction);
+        }
+
+        function jumpToPage(val) {
+            if (val) openMushafAtPage(val);
+        }
+
+        function bookmarkCurrentPage() {
+            appState.bookmarks.push({ surahName: appState.lastRead.surahName, pageNum: appState.currentPage, date: new Date().toLocaleDateString('ar-SA') });
+            saveAppData();
+            showModal("تم الحفظ", `تم حفظ الصفحة رقم ${appState.currentPage} في علاماتك المرجعية.`);
+        }
+
+        function resumeLastReadPage() {
+            switchTab('quran');
+            openMushafAtPage(appState.lastRead.pageNum || 1);
+        }
+
+        function openBookmarksModal() {
+            if (!appState.bookmarks.length) {
+                showModal("المحفوظات", "لا توجد علامات مرجعية محفوظة حتى الآن.");
+                return;
+            }
+            let content = appState.bookmarks.map(b => `<div class="p-3 bg-cream-50 dark:bg-slate-900 rounded-xl mb-2 flex justify-between items-center text-sm"><span>سورة ${b.surahName} - صفحة ${b.pageNum}</span><button onclick="openMushafAtPage(${b.pageNum}); closeModal();" class="text-emerald-600 font-bold hover:underline">انتقال</button></div>`).join('');
+            showModal("العلامات المرجعية", `<div class="max-h-60 overflow-y-auto space-y-1">${content}</div>`);
+        }
+
+        function toArabicDigits(num) {
+            return num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+        }
+
+        // Adhkar Logic
+        let adhkarProgressState = {};
+
+        function selectAdhkarCategory(categoryKey) {
+            const buttons = document.querySelectorAll('.adhkar-cat-btn');
+            buttons.forEach(btn => {
+                btn.className = "adhkar-cat-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300";
+            });
+            if (event && event.target) {
+                event.target.className = "adhkar-cat-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-emerald-600 text-white shadow-md";
+            }
+
+            const listContainer = document.getElementById('adhkar-list-container');
+            if (!listContainer) return;
+            listContainer.innerHTML = '';
+
+            const items = ADHKAR_DB[categoryKey] || [];
+            items.forEach((item, index) => {
+                const key = `${categoryKey}_${index}`;
+                if (adhkarProgressState[key] === undefined) {
+                    adhkarProgressState[key] = item.count;
+                }
+                const currentRemaining = adhkarProgressState[key];
+
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-emerald-100 dark:border-slate-700 space-y-4";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-xs text-slate-400">
+                        <span>${item.reference}</span>
+                        <span class="px-3 py-1 bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full font-bold">التكرار: ${item.count}</span>
+                    </div>
+                    <p class="text-lg quran-font text-slate-800 dark:text-slate-100 leading-relaxed">${item.text}</p>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700">
+                        <span class="text-xs font-bold text-slate-500" id="adhkar-counter-${categoryKey}-${index}">المتبقي: ${currentRemaining}</span>
+                        <button onclick="decrementAdhkar('${categoryKey}', ${index}, ${item.count})" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition shadow-md">
+                            قرأت مرة
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        function decrementAdhkar(cat, idx, maxCount) {
+            const key = `${cat}_${idx}`;
+            if (adhkarProgressState[key] === undefined) {
+                adhkarProgressState[key] = maxCount;
+            }
+            if (adhkarProgressState[key] > 0) {
+                adhkarProgressState[key]--;
+                const counterEl = document.getElementById(`adhkar-counter-${cat}-${idx}`);
+                if (counterEl) counterEl.innerText = `المتبقي: ${adhkarProgressState[key]}`;
+                if (adhkarProgressState[key] === 0) {
+                    showModal("أحسنت", "بارك الله فيك، لقد أتممت هذا الذكر.");
+                    updateHomeStats();
+                }
+            }
+        }
+
+        // Tasbih Logic
+        function incrementTasbih() {
+            appState.tasbihCount++;
+            document.getElementById('tasbih-count').innerText = appState.tasbihCount;
+            appState.tasbihHistory.push(appState.tasbihCount);
+            saveAppData();
+        }
+
+        function undoTasbih() {
+            if (appState.tasbihHistory.length > 1) {
+                appState.tasbihHistory.pop();
+                appState.tasbihCount = appState.tasbihHistory[appState.tasbihHistory.length - 1];
+            } else {
+                appState.tasbihCount = 0;
+                appState.tasbihHistory = [];
+            }
+            document.getElementById('tasbih-count').innerText = appState.tasbihCount;
+            saveAppData();
+        }
+
+        function changeTasbihPhrase(phrase) {
+            appState.tasbihPhrase = phrase;
+            document.getElementById('tasbih-current-phrase').innerText = phrase;
+            saveAppData();
+        }
+
+        function confirmResetTasbih() {
+            showConfirmModal("تصفير العداد", "هل أنت متأكد من رغبتك في إعادة ضبط العداد إلى الصفر؟", () => {
+                appState.tasbihCount = 0;
+                appState.tasbihHistory = [];
+                document.getElementById('tasbih-count').innerText = 0;
+                saveAppData();
+                closeModal();
+            });
+        }
+
+        function changeTasbihGoal() {
+            const newGoal = prompt("أدخل هدف التسبيح الجديد:", appState.tasbihGoal);
+            if (newGoal && !isNaN(newGoal)) {
+                appState.tasbihGoal = parseInt(newGoal);
+                document.getElementById('tasbih-goal-label').innerText = appState.tasbihGoal;
+                saveAppData();
+            }
+        }
+
+        // Wird Logic
+        function toggleQuranWirdDone() {
+            appState.wirdQuranDone = !appState.wirdQuranDone;
+            const btn = document.getElementById('wird-quran-btn');
+            if (btn) {
+                if (appState.wirdQuranDone) {
+                    btn.innerText = "تم الإنجاز ✓";
+                    btn.className = "px-3 py-1 bg-amber-600 text-white rounded-lg text-xs font-bold transition";
+                } else {
+                    btn.innerText = "تم الإنجاز";
+                    btn.className = "px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold transition";
+                }
+            }
+            saveAppData();
+            updateHomeStats();
+        }
+
+        function saveWirdSettings() {
+            const qInput = document.getElementById('setting-quran-target');
+            const tInput = document.getElementById('setting-tasbih-target');
+            if (qInput) appState.quranTarget = parseInt(qInput.value) || 5;
+            if (tInput) appState.tasbihGoal = parseInt(tInput.value) || 100;
+            saveAppData();
+            showModal("تم الحفظ", "تم تحديث أهدافك اليومية بنجاح.");
+        }
+
+        function updateHomeStats() {
+            document.getElementById('home-streak-days').innerText = appState.streakDays;
+            document.getElementById('wird-streak-days').innerText = `${appState.streakDays} أيام`;
+            
+            const qPercent = appState.wirdQuranDone ? 100 : 20;
+            document.getElementById('home-quran-progress').innerText = `${qPercent}%`;
+            
+            document.getElementById('home-last-read-title').innerText = `سورة ${appState.lastRead.surahName}`;
+            document.getElementById('home-last-read-desc').innerText = `الصفحة رقم ${appState.lastRead.pageNum || 1}`;
+        }
+
+        // Export/Import Data
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "noor_backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed && typeof parsed === 'object') {
+                        appState = parsed;
+                        saveAppData();
+                        loadAppData();
+                        showModal("تم الاستيراد", "تم استعادة بياناتك بنجاح.");
+                    }
+                } catch (err) {
+                    showModal("خطأ", "الملف غير صالح أو تالف.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function confirmResetAllData() {
+            showConfirmModal("مسح البيانات", "هل أنت متأكد تماماً من مسح كافة البيانات والإعدادات؟", () => {
+                localStorage.removeItem('noor_app_state');
+                location.reload();
+            });
+        }
+
+        // Modal Helpers
+        function showModal(title, message) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerHTML = message;
+            document.getElementById('modal-actions').innerHTML = `<button onclick="closeModal()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">حسناً</button>`;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function showConfirmModal(title, message, onConfirm) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerHTML = message;
+            document.getElementById('modal-actions').innerHTML = `
+                <button onclick="closeModal()" class="px-5 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-sm transition">إلغاء</button>
+                <button id="modal-confirm-btn" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm transition">تأكيد</button>
+            `;
+            document.getElementById('custom-modal').classList.remove('hidden');
+            document.getElementById('modal-confirm-btn').onclick = onConfirm;
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
